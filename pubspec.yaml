@@ -2,6 +2,10 @@ name: flutter_neis
 description: "Flutter에서 NEIS 교육정보 개방 포털을 쉽게 사용할 수 있게 해주는 패키지입니다."
 version: 1.0.0+1
 
+homepage: https://github.com/jinhyeon-dev/flutter_neis
+repository: https://github.com/jinhyeon-dev/flutter_neis
+issue_tracker: https://github.com/jinhyeon-dev/flutter_neis/issues
+
 environment:
   sdk: ^3.7.2
 
