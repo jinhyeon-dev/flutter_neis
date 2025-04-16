@@ -1,4 +1,4 @@
-import 'services/school_service.dart';
+import 'services/school/school_service.dart';
 import 'package:flutter_neis/flutter_neis.dart';
 
 class NeisClient {

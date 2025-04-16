@@ -1,6 +1,6 @@
 class MealInfo {
   final String date;
-  final String type; // 조식/중식/석식
+  final String type; // '조식', '중식', '석식'
   final List<String> dishes;
 
   MealInfo({required this.date, required this.type, required this.dishes});
