@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/meal_info.dart';
+import '../../models/meal_info.dart';
 
 class MealService {
   final String apiKey;
