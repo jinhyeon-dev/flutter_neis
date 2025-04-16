@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     neis.loadSchoolInfo('경북소프트웨어마이스터고등학교').then((_) {
-      setState(() {});
+      setState(() {}); // school 값 갱신 시 화면 재빌드
     });
   }
 
