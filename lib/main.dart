@@ -10,7 +10,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomeScreen());
+    return const MaterialApp(
+      home: HomeScreen(),
+      debugShowCheckedModeBanner: false,
+    );
   }
 }
 
@@ -23,60 +26,65 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final neis = Neis(apiKey: '4cb39a23104d459ebe0d394f9900cf5c');
+  bool _loading = true;
 
   @override
   void initState() {
     super.initState();
-    neis.loadSchoolInfo('경북소프트웨어마이스터고등학교').then((_) {
-      setState(() {});
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      await neis.loadSchoolInfo('경북소프트웨어마이스터고등학교');
+    } catch (e) {
+      debugPrint('급식 로드 오류: $e');
+    }
+    setState(() {
+      _loading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final meals = neis.meal;
-
-    if (meals.isEmpty) {
+    if (_loading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    final todayMeal = meals.first;
-
     return Scaffold(
-      body: SingleChildScrollView(
+      appBar: AppBar(title: Text('${neis.schoolName} 급식 정보')),
+      body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (todayMeal.breakfast.isNotEmpty) ...[
-              const Text(
-                '🍞 조식',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
-              ),
-              ...todayMeal.breakfast.map((e) => Text(e)).toList(),
-              const SizedBox(height: 12),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildMealSection('🍞 조식', neis.breakfast),
+              _buildMealSection('🍱 중식', neis.lunch),
+              _buildMealSection('🍛 석식', neis.dinner),
             ],
-            if (todayMeal.lunch.isNotEmpty) ...[
-              const Text(
-                '🍱 중식',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              ...todayMeal.lunch.map((e) => Text(e)).toList(),
-              const SizedBox(height: 12),
-            ],
-            if (todayMeal.dinner.isNotEmpty) ...[
-              const Text(
-                '🍛 석식',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              ...todayMeal.dinner.map((e) => Text(e)).toList(),
-            ],
-          ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildMealSection(String title, MealInfo? meal) {
+    if (meal == null || meal.dishes.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        ...meal.dishes.map((dish) => Text(dish)).toList(),
+        const SizedBox(height: 16),
+      ],
     );
   }
 }

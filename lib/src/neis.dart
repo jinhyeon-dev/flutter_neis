@@ -25,11 +25,25 @@ class Neis {
     );
   }
 
-  /// Getter 형태로 제공
+  // getter: 학교 정보
   String get officeCode => _school?.officeCode ?? '';
   String get schoolCode => _school?.schoolCode ?? '';
   String get schoolName => _school?.schoolName ?? '';
-  List<MealInfo> get meal => _meals;
+  List<MealInfo> get meals => _meals;
+
+  // 끼니별 getter
+  MealInfo? get breakfast => _meals.firstWhere(
+    (e) => e.type == '조식',
+    orElse: () => MealInfo(date: '', type: '조식', dishes: []),
+  );
+  MealInfo? get lunch => _meals.firstWhere(
+    (e) => e.type == '중식',
+    orElse: () => MealInfo(date: '', type: '중식', dishes: []),
+  );
+  MealInfo? get dinner => _meals.firstWhere(
+    (e) => e.type == '석식',
+    orElse: () => MealInfo(date: '', type: '석식', dishes: []),
+  );
 
   String _two(int n) => n.toString().padLeft(2, '0');
 }
