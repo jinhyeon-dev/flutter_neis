@@ -27,6 +27,36 @@ print(neis.schoolCode);
 print(neis.officeCode);
 ```
 
+## 예시 코드
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_neis/flutter_neis.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final neis = Neis(apiKey: 'YOUR-API-KEY');
+
+  @override
+  void initState() {
+    super.initState();
+    neis.loadSchoolInfo('경북소프트웨어마이스터고등학교').then((_) {
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: Center(child: Text(neis.officeCode)));
+  }
+}
+```
+
 
 ## 설치
 
