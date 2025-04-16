@@ -34,6 +34,49 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text(neis.officeCode)));
+    final meals = neis.meal;
+
+    if (meals.isEmpty) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    final todayMeal = meals.first;
+
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (todayMeal.breakfast.isNotEmpty) ...[
+              const Text(
+                '🍞 조식',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
+              ),
+              ...todayMeal.breakfast.map((e) => Text(e)).toList(),
+              const SizedBox(height: 12),
+            ],
+            if (todayMeal.lunch.isNotEmpty) ...[
+              const Text(
+                '🍱 중식',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              ...todayMeal.lunch.map((e) => Text(e)).toList(),
+              const SizedBox(height: 12),
+            ],
+            if (todayMeal.dinner.isNotEmpty) ...[
+              const Text(
+                '🍛 석식',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              ...todayMeal.dinner.map((e) => Text(e)).toList(),
+            ],
+          ],
+        ),
+      ),
+    );
   }
 }
